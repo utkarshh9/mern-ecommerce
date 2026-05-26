@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
+import { useSelector } from "react-redux";
+
 const Navbar = () => {
+
+    const cartItems = useSelector(
+        (state) => state.cart.cartItems
+    );
+
     return (
         <nav className="bg-black text-white px-6 py-4">
 
@@ -12,9 +19,9 @@ const Navbar = () => {
 
                 <div className="flex gap-6">
 
-                    <button>
-                        Cart
-                    </button>
+                    <Link to="/cart">
+                        Cart ({cartItems.length})
+                    </Link>
 
                     <button>
                         Login
