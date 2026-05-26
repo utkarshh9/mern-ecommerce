@@ -8,6 +8,11 @@ const Navbar = () => {
         (state) => state.cart.cartItems
     );
 
+    const totalItems = cartItems.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+    );
+
     return (
         <nav className="bg-black text-white px-6 py-4">
 
@@ -20,7 +25,9 @@ const Navbar = () => {
                 <div className="flex gap-6">
 
                     <Link to="/cart">
-                        Cart ({cartItems.length})
+                        {totalItems > 0
+                            ? `Cart (${totalItems})`
+                            : "Cart"}
                     </Link>
 
                     <button>
