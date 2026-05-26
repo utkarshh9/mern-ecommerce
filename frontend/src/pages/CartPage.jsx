@@ -81,12 +81,28 @@ const CartPage = () => {
                                         onClick={() =>
                                             dispatch(increaseQuantity(item._id))
                                         }
-                                        className="bg-gray-200 px-3 py-1 rounded"
+
+                                        disabled={item.quantity >= item.stock}
+
+                                        className={`px-3 py-1 rounded ${item.quantity >= item.stock
+                                                ? "bg-gray-300 cursor-not-allowed"
+                                                : "bg-gray-200"
+                                            }`}
                                     >
                                         +
                                     </button>
 
                                 </div>
+
+                                {item.quantity >= item.stock && (
+
+                                    <p className="text-red-500 mt-2">
+
+                                        Maximum available stock reached
+
+                                    </p>
+
+                                )}
 
                             </div>
 

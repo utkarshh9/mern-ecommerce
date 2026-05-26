@@ -23,7 +23,11 @@ const cartSlice = createSlice({
 
             if (existingItem) {
 
-                existingItem.quantity += 1;
+                if (existingItem.quantity < existingItem.stock) {
+
+                    existingItem.quantity += 1;
+
+                }
 
             } else {
 
@@ -57,8 +61,10 @@ const cartSlice = createSlice({
                 (product) => product._id === action.payload
             );
 
-            if (item) {
+            if (item && item.quantity < item.stock) {
+
                 item.quantity += 1;
+
             }
 
             localStorage.setItem(

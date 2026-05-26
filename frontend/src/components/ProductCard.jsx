@@ -5,12 +5,12 @@ const ProductCard = ({ product }) => {
 
     <Link to={`/product/${product._id}`}>
 
-      <div className="border rounded-lg p-4 shadow-md hover:shadow-xl transition duration-300">
+      <div className="border rounded-xl p-4 shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-1 bg-white">
 
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-52 object-cover rounded-md"
+          className="w-full h-52 object-cover rounded-md hover:scale-105 transition duration-300"
         />
 
         <h2 className="text-xl font-semibold mt-3">
@@ -22,7 +22,7 @@ const ProductCard = ({ product }) => {
         </p>
 
         <p className="text-2xl font-bold mt-3">
-          ${product.price}
+          ${product.price.toLocaleString()}
         </p>
 
       </div>

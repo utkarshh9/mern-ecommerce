@@ -4,7 +4,10 @@ import { useParams } from "react-router-dom";
 
 import { fetchSingleProduct } from "../api/productApi";
 
-import { useDispatch } from "react-redux";
+import {
+    useDispatch,
+    useSelector,
+} from "react-redux";
 
 import { addToCart } from "../redux/slices/cartSlice";
 
@@ -14,6 +17,10 @@ const ProductDetailsPage = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch();
+
+    const cartItems = useSelector(
+        (state) => state.cart.cartItems
+    );
 
     const [product, setProduct] = useState(null);
 
@@ -65,6 +72,13 @@ const ProductDetailsPage = () => {
         );
     }
 
+    const existingCartItem = cartItems.find(
+        (item) => item._id === product?._id
+    );
+
+    const currentQuantity =
+        existingCartItem?.quantity || 0;
+
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-10">
@@ -110,15 +124,46 @@ const ProductDetailsPage = () => {
                         </span>
                     </p>
 
+                    <p
+                        className={`mt-4 text-lg font-semibold ${product.stock > 0
+                            ? "text-green-600"
+                            : "text-red-500"
+                            }`}
+                    >
+
+                        {product.stock > 0
+                            ? "In Stock"
+                            : "Out Of Stock"}
+
+                    </p>
+
 
                     <button
                         onClick={() => dispatch(addToCart(product))}
-                        className="bg-black text-white px-6 py-3 rounded-lg mt-8 hover:bg-gray-800"
+                        disabled={
+                            product.stock === 0 ||
+                            currentQuantity >= product.stock
+                        }
+                        className={`px-6 py-3 rounded-lg mt-8 text-white ${currentQuantity < product.stock
+                            ? "bg-black hover:bg-gray-800"
+                            : "bg-gray-400 cursor-not-allowed"
+                            }`}
                     >
 
                         Add To Cart
 
                     </button>
+
+                    {currentQuantity >= product.stock &&
+                        product.stock > 0 && (
+
+                            <p className="text-red-500 mt-4">
+
+                                Maximum available stock reached
+
+                            </p>
+
+                        )}
 
                 </div>
 
