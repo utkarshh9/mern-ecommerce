@@ -38,6 +38,16 @@ const Navbar = () => {
                             : "Cart"}
                     </Link>
 
+                    {userInfo && (
+
+                        <Link to="/myorders">
+
+                            My Orders
+
+                        </Link>
+
+                    )}
+
                     {userInfo?.isAdmin && (
 
                         <Link to="/admin">

@@ -55,6 +55,33 @@ const PlaceOrderPage = () => {
 
             try {
 
+                // CREATE UNPAID ORDER FIRST
+                const { data: createdOrder } =
+                    await axios.post(
+
+                        "http://localhost:5000/api/orders",
+
+                        {
+
+                            orderItems: cartItems,
+
+                            shippingAddress,
+
+                            totalPrice,
+
+                        },
+
+                        {
+                            headers: {
+
+                                Authorization:
+                                    `Bearer ${userInfo.token}`,
+                            },
+                        }
+                    );
+
+
+                // THEN CREATE RAZORPAY ORDER
                 const { data } =
                     await axios.post(
 
@@ -94,19 +121,11 @@ const PlaceOrderPage = () => {
 
                     handler: async function () {
 
-                        await axios.post(
+                        await axios.put(
 
-                            "http://localhost:5000/api/orders",
+                            `http://localhost:5000/api/orders/${createdOrder._id}/pay`,
 
-                            {
-
-                                orderItems: cartItems,
-
-                                shippingAddress,
-
-                                totalPrice,
-
-                            },
+                            {},
 
                             {
                                 headers: {

@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  placeOrder,
+  placeOrder, payOrder, getMyOrders,
 } = require("../controllers/orderController");
 
 const {
@@ -15,6 +15,18 @@ router.post(
   "/",
   protect,
   placeOrder
+);
+
+router.put(
+  "/:id/pay",
+  protect,
+  payOrder
+);
+
+router.get(
+  "/myorders",
+  protect,
+  getMyOrders
 );
 
 

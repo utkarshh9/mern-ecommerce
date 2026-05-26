@@ -28,6 +28,8 @@ import ShippingPage from "./pages/ShippingPage";
 
 import PlaceOrderPage from "./pages/PlaceOrderPage";
 
+import MyOrdersPage from "./pages/MyOrdersPage";
+
 
 function App() {
   return (
@@ -129,6 +131,17 @@ function App() {
             <ProtectedRoute>
 
               <PlaceOrderPage />
+
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/myorders"
+          element={
+            <ProtectedRoute>
+
+              <MyOrdersPage />
 
             </ProtectedRoute>
           }
