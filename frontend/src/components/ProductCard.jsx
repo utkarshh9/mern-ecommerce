@@ -1,26 +1,33 @@
+import { Link } from "react-router-dom";
+
 const ProductCard = ({ product }) => {
   return (
-    <div className="border rounded-lg p-4 shadow-md">
 
-      <img
-        src={product.image}
-        alt={product.title}
-        className="w-full h-52 object-cover rounded-md"
-      />
+    <Link to={`/product/${product._id}`}>
 
-      <h2 className="text-xl font-semibold mt-3">
-        {product.title}
-      </h2>
+      <div className="border rounded-lg p-4 shadow-md hover:shadow-xl transition duration-300">
 
-      <p className="text-gray-600 mt-2">
-        {product.description}
-      </p>
+        <img
+          src={product.image}
+          alt={product.title}
+          className="w-full h-52 object-cover rounded-md"
+        />
 
-      <p className="text-2xl font-bold mt-3">
-        ${product.price}
-      </p>
+        <h2 className="text-xl font-semibold mt-3">
+          {product.title}
+        </h2>
 
-    </div>
+        <p className="text-gray-600 mt-2">
+          {product.description}
+        </p>
+
+        <p className="text-2xl font-bold mt-3">
+          ${product.price}
+        </p>
+
+      </div>
+
+    </Link>
   );
 };
 

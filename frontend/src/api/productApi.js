@@ -8,3 +8,12 @@ export const fetchProducts = async () => {
 
   return response.data;
 };
+
+export const fetchSingleProduct = async (id) => {
+
+  const response = await axios.get(
+    `http://localhost:5000/api/products/${id}`
+  );
+
+  return response.data;
+};

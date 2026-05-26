@@ -1,29 +1,31 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
-  return (
-    <nav className="bg-black text-white px-6 py-4">
+    return (
+        <nav className="bg-black text-white px-6 py-4">
 
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <div className="max-w-7xl mx-auto flex justify-between items-center">
 
-        <h1 className="text-2xl font-bold">
-          Negozio
-        </h1>
+                <Link to="/" className="text-2xl font-bold">
+                    Negozio
+                </Link>
 
-        <div className="flex gap-6">
+                <div className="flex gap-6">
 
-          <button>
-            Cart
-          </button>
+                    <button>
+                        Cart
+                    </button>
 
-          <button>
-            Login
-          </button>
+                    <button>
+                        Login
+                    </button>
 
-        </div>
+                </div>
 
-      </div>
+            </div>
 
-    </nav>
-  );
+        </nav>
+    );
 };
 
 export default Navbar;
