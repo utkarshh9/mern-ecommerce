@@ -10,9 +10,19 @@ const {
   deleteProduct,
 } = require("../controllers/productController");
 
+const {
+  protect,
+  admin,
+} = require("../middleware/authMiddleware");
+
 
 // CREATE PRODUCT
-router.post("/", createProduct);
+router.post(
+  "/",
+  protect,
+  admin,
+  createProduct
+);
 
 
 // GET ALL PRODUCTS
@@ -24,11 +34,21 @@ router.get("/:id", getSingleProduct);
 
 
 // UPDATE PRODUCT
-router.put("/:id", updateProduct);
+router.put(
+  "/:id",
+  protect,
+  admin,
+  updateProduct
+);
 
 
 // DELETE PRODUCT
-router.delete("/:id", deleteProduct);
+router.delete(
+  "/:id",
+  protect,
+  admin,
+  deleteProduct
+);
 
 
 module.exports = router;
