@@ -126,7 +126,7 @@ const AdminProductsPage = () => {
                                     <img
                                         src={product.image}
                                         alt={product.title}
-                                        className="w-20 h-20 object-cover"
+                                        className="w-28 h-28 object-cover rounded-lg mx-auto"
                                     />
 
                                 </td>
@@ -155,16 +155,33 @@ const AdminProductsPage = () => {
 
                                 <td className="p-4 border">
 
-                                    <button
-                                        onClick={() =>
-                                            deleteHandler(product._id)
-                                        }
-                                        className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                                    >
+                                    <div className="flex items-center justify-center gap-3">
 
-                                        Delete
+                                        <button
+                                            onClick={() =>
+                                                window.location.href =
+                                                `/admin/products/${product._id}/edit`
+                                            }
+                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                        >
 
-                                    </button>
+                                            Edit
+
+                                        </button>
+
+
+                                        <button
+                                            onClick={() =>
+                                                deleteHandler(product._id)
+                                            }
+                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                                        >
+
+                                            Delete
+
+                                        </button>
+
+                                    </div>
 
                                 </td>
 

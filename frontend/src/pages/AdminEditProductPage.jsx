@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState }
+    from "react";
 
 import axios from "axios";
 
-import { useSelector } from "react-redux";
+import {
+    useNavigate,
+    useParams,
+} from "react-router-dom";
 
-import { useNavigate } from "react-router-dom";
+import { useSelector }
+    from "react-redux";
 
 
-const AdminCreateProductPage = () => {
+const AdminEditProductPage = () => {
+
+    const { id } = useParams();
 
     const navigate = useNavigate();
+
 
     const { userInfo } = useSelector(
         (state) => state.auth
@@ -18,46 +26,49 @@ const AdminCreateProductPage = () => {
 
     const [title, setTitle] = useState("");
 
-    const [description, setDescription] = useState("");
+    const [description, setDescription] =
+        useState("");
 
     const [price, setPrice] = useState("");
 
-    const [category, setCategory] = useState("");
+    const [category, setCategory] =
+        useState("");
 
     const [stock, setStock] = useState("");
 
     const [image, setImage] = useState("");
 
-    const [uploading, setUploading] = useState(false);
+    const [uploading, setUploading] =
+        useState(false);
 
 
-    const submitHandler = async (e) => {
+    useEffect(() => {
 
-        e.preventDefault();
+        const fetchProduct = async () => {
 
-        await axios.post(
+            const { data } = await axios.get(
 
-            "http://localhost:5000/api/products",
+                `http://localhost:5000/api/products/${id}`
+            );
 
-            {
-                title,
-                description,
-                price,
-                category,
-                stock,
-                image,
-            },
 
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${userInfo.token}`,
-                },
-            }
-        );
+            setTitle(data.title);
 
-        navigate("/admin/products");
-    };
+            setDescription(data.description);
+
+            setPrice(data.price);
+
+            setCategory(data.category);
+
+            setStock(data.stock);
+
+            setImage(data.image);
+        };
+
+        fetchProduct();
+
+    }, [id]);
+
 
     const uploadFileHandler =
         async (e) => {
@@ -106,12 +117,41 @@ const AdminCreateProductPage = () => {
         };
 
 
+    const submitHandler = async (e) => {
+
+        e.preventDefault();
+
+        await axios.put(
+
+            `http://localhost:5000/api/products/${id}`,
+
+            {
+                title,
+                description,
+                price,
+                category,
+                stock,
+                image,
+            },
+
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${userInfo.token}`,
+                },
+            }
+        );
+
+        navigate("/admin/products");
+    };
+
+
     return (
         <div className="max-w-xl mx-auto mt-10 border p-8 rounded-xl shadow-lg">
 
             <h1 className="text-3xl font-bold mb-6">
 
-                Create Product
+                Edit Product
 
             </h1>
 
@@ -123,73 +163,62 @@ const AdminCreateProductPage = () => {
 
                 <input
                     type="text"
-                    placeholder="Title"
                     value={title}
                     onChange={(e) =>
                         setTitle(e.target.value)
                     }
                     className="w-full border p-3 rounded-lg"
-                    required
                 />
 
 
                 <textarea
-                    placeholder="Description"
                     value={description}
                     onChange={(e) =>
                         setDescription(e.target.value)
                     }
                     className="w-full border p-3 rounded-lg"
-                    required
                 />
 
 
                 <input
                     type="number"
-                    placeholder="Price"
                     value={price}
                     onChange={(e) =>
                         setPrice(e.target.value)
                     }
                     className="w-full border p-3 rounded-lg"
-                    required
                 />
 
 
                 <input
                     type="text"
-                    placeholder="Category"
                     value={category}
                     onChange={(e) =>
                         setCategory(e.target.value)
                     }
                     className="w-full border p-3 rounded-lg"
-                    required
                 />
 
 
                 <input
                     type="number"
-                    placeholder="Stock"
                     value={stock}
                     onChange={(e) =>
                         setStock(e.target.value)
                     }
                     className="w-full border p-3 rounded-lg"
-                    required
                 />
 
 
                 <input
                     type="text"
-                    placeholder="Image URL"
                     value={image}
                     onChange={(e) =>
                         setImage(e.target.value)
                     }
                     className="w-full border p-3 rounded-lg"
-                    required={!image}
                 />
+
 
                 <div>
 
@@ -204,19 +233,21 @@ const AdminCreateProductPage = () => {
                         onChange={uploadFileHandler}
                         className="w-full border p-3 rounded-lg bg-white"
                     />
-                    {uploading && (
-                        <p>Uploading...</p>
-                    )}
 
                 </div>
 
 
+                {uploading && (
+                    <p>Uploading...</p>
+                )}
+
+
                 <button
                     type="submit"
-                    className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800"
+                    className="w-full bg-black text-white py-3 rounded-lg"
                 >
 
-                    Create Product
+                    Update Product
 
                 </button>
 
@@ -226,4 +257,4 @@ const AdminCreateProductPage = () => {
     );
 };
 
-export default AdminCreateProductPage;
+export default AdminEditProductPage;

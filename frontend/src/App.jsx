@@ -22,6 +22,8 @@ import AdminProductsPage from "./pages/AdminProductsPage";
 
 import AdminCreateProductPage from "./pages/AdminCreateProductPage";
 
+import AdminEditProductPage from "./pages/AdminEditProductPage";
+
 
 function App() {
   return (
@@ -89,6 +91,17 @@ function App() {
             <AdminRoute>
 
               <AdminCreateProductPage />
+
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products/:id/edit"
+          element={
+            <AdminRoute>
+
+              <AdminEditProductPage />
 
             </AdminRoute>
           }
