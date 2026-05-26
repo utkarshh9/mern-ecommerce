@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { logout } from "../redux/slices/authSlice";
 
 const Navbar = () => {
 
@@ -11,6 +13,12 @@ const Navbar = () => {
     const totalItems = cartItems.reduce(
         (acc, item) => acc + item.quantity,
         0
+    );
+
+    const dispatch = useDispatch();
+
+    const { userInfo } = useSelector(
+        (state) => state.auth
     );
 
     return (
@@ -30,9 +38,39 @@ const Navbar = () => {
                             : "Cart"}
                     </Link>
 
-                    <button>
-                        Login
-                    </button>
+                    {userInfo ? (
+
+                        <div className="flex items-center gap-4">
+
+                            <p>
+                                Hi, {userInfo.name}
+                            </p>
+
+                            <button
+                                onClick={() => dispatch(logout())}
+                            >
+
+                                Logout
+
+                            </button>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="flex gap-4">
+
+                            <Link to="/login">
+                                Login
+                            </Link>
+
+                            <Link to="/register">
+                                Register
+                            </Link>
+
+                        </div>
+
+                    )}
 
                 </div>
 
