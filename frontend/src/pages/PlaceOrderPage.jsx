@@ -1,192 +1,248 @@
 import axios from "axios";
 
-import { useSelector,
-useDispatch }
-from "react-redux";
+import {
+    useSelector,
+    useDispatch
+}
+    from "react-redux";
 
 import { useNavigate }
-from "react-router-dom";
+    from "react-router-dom";
 
 import { clearCart }
-from "../redux/slices/cartSlice";
+    from "../redux/slices/cartSlice";
 
 
 const PlaceOrderPage = () => {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
-
-  const { cartItems } = useSelector(
-    (state) => state.cart
-  );
+    const dispatch = useDispatch();
 
 
-  const { userInfo } = useSelector(
-    (state) => state.auth
-  );
-
-
-  const shippingAddress =
-    JSON.parse(
-      localStorage.getItem(
-        "shippingAddress"
-      )
+    const { cartItems } = useSelector(
+        (state) => state.cart
     );
 
 
-  const totalPrice =
-    cartItems.reduce(
-
-      (acc, item) =>
-
-        acc +
-        item.price * item.quantity,
-
-      0
+    const { userInfo } = useSelector(
+        (state) => state.auth
     );
 
 
-  const placeOrderHandler =
-    async () => {
-
-      try {
-
-        await axios.post(
-
-          "http://localhost:5000/api/orders",
-
-          {
-
-            orderItems: cartItems,
-
-            shippingAddress,
-
-            totalPrice,
-
-          },
-
-          {
-            headers: {
-
-              Authorization:
-                `Bearer ${userInfo.token}`,
-            },
-          }
+    const shippingAddress =
+        JSON.parse(
+            localStorage.getItem(
+                "shippingAddress"
+            )
         );
 
 
-        dispatch(clearCart());
+    const totalPrice =
+        cartItems.reduce(
 
-        navigate("/");
+            (acc, item) =>
 
-      } catch (error) {
+                acc +
+                item.price * item.quantity,
 
-        console.log(error);
-      }
-    };
-
-
-  return (
-    <div className="max-w-5xl mx-auto py-10 px-4">
-
-      <h1 className="text-4xl font-bold mb-10">
-
-        Place Order
-
-      </h1>
+            0
+        );
 
 
-      <div className="grid md:grid-cols-2 gap-10">
+    const placeOrderHandler =
+        async () => {
 
-        <div>
+            try {
 
-          <h2 className="text-2xl font-bold mb-4">
+                const { data } =
+                    await axios.post(
 
-            Shipping
+                        "http://localhost:5000/api/payments/create-order",
 
-          </h2>
+                        {
+                            amount: totalPrice,
+                        },
 
+                        {
+                            headers: {
 
-          <p>
-            {shippingAddress.address}
-          </p>
-
-          <p>
-            {shippingAddress.city}
-          </p>
-
-          <p>
-            {shippingAddress.postalCode}
-          </p>
-
-          <p>
-            {shippingAddress.country}
-          </p>
-
-        </div>
+                                Authorization:
+                                    `Bearer ${userInfo.token}`,
+                            },
+                        }
+                    );
 
 
-        <div>
+                const options = {
 
-          <h2 className="text-2xl font-bold mb-4">
+                    key:
+                        import.meta.env
+                            .VITE_RAZORPAY_KEY_ID,
 
-            Order Summary
+                    amount: data.amount,
 
-          </h2>
+                    currency: data.currency,
+
+                    name: "Negozio",
+
+                    description:
+                        "Order Payment",
+
+                    order_id: data.id,
 
 
-          {cartItems.map((item) => (
+                    handler: async function () {
 
-            <div
-              key={item._id}
-              className="flex justify-between mb-3"
-            >
+                        await axios.post(
 
-              <p>
+                            "http://localhost:5000/api/orders",
 
-                {item.title} x
-                {item.quantity}
+                            {
 
-              </p>
+                                orderItems: cartItems,
 
-              <p>
+                                shippingAddress,
 
-                $
-                {item.price *
-                  item.quantity}
+                                totalPrice,
 
-              </p>
+                            },
+
+                            {
+                                headers: {
+
+                                    Authorization:
+                                        `Bearer ${userInfo.token}`,
+                                },
+                            }
+                        );
+
+
+                        dispatch(clearCart());
+
+                        navigate("/");
+                    },
+
+
+                    theme: {
+                        color: "#000000",
+                    },
+                };
+
+
+                const razorpay =
+                    new window.Razorpay(
+                        options
+                    );
+
+                razorpay.open();
+
+            } catch (error) {
+
+                console.log(error);
+            }
+        };
+
+
+    return (
+        <div className="max-w-5xl mx-auto py-10 px-4">
+
+            <h1 className="text-4xl font-bold mb-10">
+
+                Place Order
+
+            </h1>
+
+
+            <div className="grid md:grid-cols-2 gap-10">
+
+                <div>
+
+                    <h2 className="text-2xl font-bold mb-4">
+
+                        Shipping
+
+                    </h2>
+
+
+                    <p>
+                        {shippingAddress.address}
+                    </p>
+
+                    <p>
+                        {shippingAddress.city}
+                    </p>
+
+                    <p>
+                        {shippingAddress.postalCode}
+                    </p>
+
+                    <p>
+                        {shippingAddress.country}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <h2 className="text-2xl font-bold mb-4">
+
+                        Order Summary
+
+                    </h2>
+
+
+                    {cartItems.map((item) => (
+
+                        <div
+                            key={item._id}
+                            className="flex justify-between mb-3"
+                        >
+
+                            <p>
+
+                                {item.title} x
+                                {item.quantity}
+
+                            </p>
+
+                            <p>
+
+                                $
+                                {item.price *
+                                    item.quantity}
+
+                            </p>
+
+                        </div>
+                    ))}
+
+
+                    <h2 className="text-3xl font-bold mt-8">
+
+                        Total:
+                        $
+                        {totalPrice.toFixed(2)}
+
+                    </h2>
+
+
+                    <button
+                        onClick={placeOrderHandler}
+                        className="w-full bg-black text-white py-3 rounded-lg mt-8"
+                    >
+
+                        Place Order
+
+                    </button>
+
+                </div>
 
             </div>
-          ))}
-
-
-          <h2 className="text-3xl font-bold mt-8">
-
-            Total:
-            $
-            {totalPrice.toFixed(2)}
-
-          </h2>
-
-
-          <button
-            onClick={placeOrderHandler}
-            className="w-full bg-black text-white py-3 rounded-lg mt-8"
-          >
-
-            Place Order
-
-          </button>
 
         </div>
-
-      </div>
-
-    </div>
-  );
+    );
 };
 
 export default PlaceOrderPage;
