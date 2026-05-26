@@ -1,9 +1,24 @@
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+
+import HomePage from "./pages/HomePage";
+
+
 function App() {
   return (
-    <div className="text-3xl font-bold text-center mt-10">
-      Negozio
+    <div>
+
+      <Navbar />
+
+      <Routes>
+
+        <Route path="/" element={<HomePage />} />
+
+      </Routes>
+
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
