@@ -38,6 +38,16 @@ const Navbar = () => {
                             : "Cart"}
                     </Link>
 
+                    {userInfo?.isAdmin && (
+
+                        <Link to="/admin">
+
+                            Admin
+
+                        </Link>
+
+                    )}
+
                     {userInfo ? (
 
                         <div className="flex items-center gap-4">

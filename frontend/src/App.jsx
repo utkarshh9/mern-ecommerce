@@ -14,6 +14,14 @@ import RegisterPage from "./pages/RegisterPage";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
+import AdminRoute from "./routes/AdminRoute";
+
+import AdminDashboard from "./pages/AdminDashboard";
+
+import AdminProductsPage from "./pages/AdminProductsPage";
+
+import AdminCreateProductPage from "./pages/AdminCreateProductPage";
+
 
 function App() {
   return (
@@ -49,6 +57,41 @@ function App() {
         <Route
           path="/register"
           element={<RegisterPage />}
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+
+              <AdminDashboard />
+
+            </AdminRoute>
+          }
+        />
+
+
+        <Route
+          path="/admin/products"
+          element={
+            <AdminRoute>
+
+              <AdminProductsPage />
+
+            </AdminRoute>
+          }
+        />
+
+
+        <Route
+          path="/admin/products/create"
+          element={
+            <AdminRoute>
+
+              <AdminCreateProductPage />
+
+            </AdminRoute>
+          }
         />
 
       </Routes>

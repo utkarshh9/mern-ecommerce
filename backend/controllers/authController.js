@@ -43,6 +43,8 @@ const registerUser = async (req, res) => {
 
       email: user.email,
 
+      isAdmin: user.isAdmin,
+      
       token: generateToken(user._id),
 
     });
@@ -84,6 +86,8 @@ const loginUser = async (req, res) => {
 
         email: user.email,
 
+        isAdmin: user.isAdmin,
+        
         token: generateToken(user._id),
 
       });
