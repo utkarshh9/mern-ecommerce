@@ -24,6 +24,10 @@ import AdminCreateProductPage from "./pages/AdminCreateProductPage";
 
 import AdminEditProductPage from "./pages/AdminEditProductPage";
 
+import ShippingPage from "./pages/ShippingPage";
+
+import PlaceOrderPage from "./pages/PlaceOrderPage";
+
 
 function App() {
   return (
@@ -104,6 +108,29 @@ function App() {
               <AdminEditProductPage />
 
             </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/shipping"
+          element={
+            <ProtectedRoute>
+
+              <ShippingPage />
+
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/placeorder"
+          element={
+            <ProtectedRoute>
+
+              <PlaceOrderPage />
+
+            </ProtectedRoute>
           }
         />
 

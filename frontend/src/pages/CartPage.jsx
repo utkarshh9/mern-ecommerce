@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
+import { useNavigate } from "react-router-dom";
+
 import {
     removeFromCart,
     increaseQuantity,
@@ -19,6 +21,8 @@ const CartPage = () => {
         (acc, item) => acc + item.price * item.quantity,
         0
     );
+
+    const navigate = useNavigate();
 
 
     return (
@@ -85,8 +89,8 @@ const CartPage = () => {
                                         disabled={item.quantity >= item.stock}
 
                                         className={`px-3 py-1 rounded ${item.quantity >= item.stock
-                                                ? "bg-gray-300 cursor-not-allowed"
-                                                : "bg-gray-200"
+                                            ? "bg-gray-300 cursor-not-allowed"
+                                            : "bg-gray-200"
                                             }`}
                                     >
                                         +
@@ -132,6 +136,17 @@ const CartPage = () => {
                         Total: ${totalPrice.toFixed(2)}
 
                     </h2>
+
+                    <button
+                        onClick={() =>
+                            navigate("/shipping")
+                        }
+                        className="bg-black text-white px-6 py-3 rounded-lg mt-6"
+                    >
+
+                        Proceed To Checkout
+
+                    </button>
 
                 </div>
 
