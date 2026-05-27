@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Remove localhost port from cors in server.js and set static url again in constants.js
-.env.development
-.env.production
