@@ -40,12 +40,13 @@ const AdminOrdersPage = () => {
               },
             }
           );
+          console.log(data);
 
         setOrders(data);
 
       } catch (error) {
 
-        console.log(error);
+        console.log(error.response);
       }
     };
 
@@ -124,7 +125,7 @@ const AdminOrdersPage = () => {
                 </p>
 
 
-                <p className="mt-4 font-semibold">
+                <p className="text-3xl mt-4 font-bold">
 
                   ₹{order.totalPrice}
 
@@ -164,12 +165,7 @@ const AdminOrdersPage = () => {
 
                 </p>
 
-              </div>
-
-            </div>
-
-
-            {!order.isDelivered && (
+                {!order.isDelivered && (
 
               <button
                 onClick={() =>
@@ -185,6 +181,13 @@ const AdminOrdersPage = () => {
               </button>
 
             )}
+
+              </div>
+
+            </div>
+
+
+            
 
           </div>
         ))}

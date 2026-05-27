@@ -15,8 +15,10 @@ connectDB();
 
 app.use(
   cors({
-    origin:
+    origin: [
       "https://negozio-web.vercel.app",
+      "http://localhost:5173",
+    ],
     credentials: true,
   })
 );
