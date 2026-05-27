@@ -5,16 +5,27 @@ const API_URL = `${BASE_URL}/api/products`;
 
 
 export const fetchProducts = async () => {
-  const response = await axios.get(API_URL);
+    const response = await axios.get(API_URL);
 
-  return response.data;
+    return response.data;
 };
+
+export const fetchRelatedProducts =
+    async (id) => {
+
+        const response =
+            await axios.get(
+                `${BASE_URL}/api/products/${id}/related`
+            );
+
+        return response.data;
+    };
 
 export const fetchSingleProduct = async (id) => {
 
-  const response = await axios.get(
-    `${BASE_URL}/api/products/${id}`
-  );
+    const response = await axios.get(
+        `${BASE_URL}/api/products/${id}`
+    );
 
-  return response.data;
+    return response.data;
 };

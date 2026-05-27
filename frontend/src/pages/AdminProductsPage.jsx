@@ -143,7 +143,7 @@ const AdminProductsPage = () => {
 
                                 <td className="p-4 border">
 
-                                    ${product.price}
+                                    ₹{product.price}
 
                                 </td>
 

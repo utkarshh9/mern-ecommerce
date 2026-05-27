@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, } from "react-router-dom";
 
 import {
     removeFromCart,
@@ -50,11 +50,15 @@ const CartPage = () => {
                             className="flex items-center gap-6 border p-4 rounded-lg"
                         >
 
-                            <img
-                                src={item.image}
-                                alt={item.title}
-                                className="w-32 h-32 object-cover rounded-md"
-                            />
+                            <Link to={`/product/${item._id}`}>
+
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="w-24 h-24 object-cover rounded-lg hover:scale-105 transition duration-300 cursor-pointer"
+                                />
+
+                            </Link>
 
                             <div className="flex-1">
 

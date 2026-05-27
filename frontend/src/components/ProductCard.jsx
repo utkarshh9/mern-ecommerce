@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
                 </p>
 
                 <p className="text-2xl font-bold mt-3">
-                    ${product.price.toLocaleString()}
+                    ₹{product.price.toLocaleString()}
                 </p>
 
                 <button

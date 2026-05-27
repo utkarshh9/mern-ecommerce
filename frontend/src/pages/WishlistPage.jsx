@@ -68,7 +68,7 @@ const WishlistPage = () => {
 
                             <p className="text-xl font-semibold mt-2">
 
-                                ${product.price}
+                                ₹{product.price}
 
                             </p>
 

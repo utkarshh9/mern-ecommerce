@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { fetchSingleProduct } from "../api/productApi";
+import {
+    fetchSingleProduct,
+    fetchRelatedProducts,
+} from "../api/productApi";
+
+import ProductCard from "../components/ProductCard";
 
 import {
     useDispatch,
@@ -10,6 +15,11 @@ import {
 } from "react-redux";
 
 import { addToCart } from "../redux/slices/cartSlice";
+
+import {
+    addToWishlist,
+    removeFromWishlist,
+} from "../redux/slices/wishlistSlice";
 
 import { BASE_URL } from "../constants";
 
@@ -26,12 +36,19 @@ const ProductDetailsPage = () => {
         (state) => state.cart.cartItems
     );
 
+    const { wishlistItems } =
+    useSelector(
+        (state) => state.wishlist
+    );
+
     const userInfo =
         useSelector(
             (state) => state.auth.userInfo
         );
 
     const [product, setProduct] = useState(null);
+
+    const [relatedProducts, setRelatedProducts] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
@@ -44,6 +61,8 @@ const ProductDetailsPage = () => {
 
     useEffect(() => {
 
+        window.scrollTo(0, 0);
+
         const loadProduct = async () => {
 
             try {
@@ -51,6 +70,11 @@ const ProductDetailsPage = () => {
                 const data = await fetchSingleProduct(id);
 
                 setProduct(data);
+
+                const related =
+                    await fetchRelatedProducts(id);
+
+                setRelatedProducts(related);
 
             } catch (error) {
 
@@ -137,6 +161,13 @@ const ProductDetailsPage = () => {
             }
         };
 
+        const isWishlisted =
+    wishlistItems.find(
+
+        (item) =>
+            item._id === product?._id
+    );
+
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-10">
@@ -165,7 +196,7 @@ const ProductDetailsPage = () => {
                     </p>
 
                     <p className="text-3xl font-bold mt-6">
-                        ${product.price}
+                        ₹{product.price}
                     </p>
 
                     <p className="mt-4 text-lg">
@@ -196,32 +227,67 @@ const ProductDetailsPage = () => {
                     </p>
 
 
-                    <button
-                        onClick={() => dispatch(addToCart(product))}
-                        disabled={
-                            product.stock === 0 ||
-                            currentQuantity >= product.stock
-                        }
-                        className={`px-6 py-3 rounded-lg mt-8 text-white ${currentQuantity < product.stock
-                            ? "bg-black hover:bg-gray-800"
-                            : "bg-gray-400 cursor-not-allowed"
-                            }`}
-                    >
+    <div className="flex gap-4 mt-8 items-start">
 
-                        Add To Cart
+    <button
+        onClick={() => dispatch(addToCart(product))}
+        disabled={
+            product.stock === 0 ||
+            currentQuantity >= product.stock
+        }
+        className={`px-6 py-3 rounded-lg text-white ${currentQuantity < product.stock
+            ? "bg-black hover:bg-gray-800"
+            : "bg-gray-400 cursor-not-allowed"
+            }`}
+    >
 
-                    </button>
+        Add To Cart
 
-                    {currentQuantity >= product.stock &&
-                        product.stock > 0 && (
+    </button>
 
-                            <p className="text-red-500 mt-4">
 
-                                Maximum available stock reached
+    <button
 
-                            </p>
+        onClick={() =>
 
-                        )}
+            isWishlisted
+
+                ? dispatch(
+                    removeFromWishlist(
+                        product._id
+                    )
+                )
+
+                : dispatch(
+                    addToWishlist(product)
+                )
+        }
+
+        className={`px-6 py-3 rounded-lg border transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted
+                ? "bg-red-500 text-white"
+                : "bg-white text-black"
+            }`}
+    >
+
+        {isWishlisted
+            ? "♥ Remove Wishlist"
+            : "♡ Add Wishlist"}
+
+    </button>
+
+</div>
+
+
+{currentQuantity >= product.stock &&
+    product.stock > 0 && (
+
+        <p className="text-red-500 mt-4">
+
+            Maximum available stock reached
+
+        </p>
+
+)}
 
                 </div>
 
@@ -234,6 +300,33 @@ const ProductDetailsPage = () => {
                 ({product.numReviews} reviews)
 
             </p>
+
+            {relatedProducts.length > 0 && (
+
+                <div className="mt-20">
+
+                    <h2 className="text-3xl font-bold mb-8">
+
+                        You May Also Like
+
+                    </h2>
+
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                        {relatedProducts.map((item) => (
+
+                            <ProductCard
+                                key={item._id}
+                                product={item}
+                            />
+
+                        ))}
+
+                    </div>
+
+                </div>
+            )}
 
             <div className="mt-12">
 

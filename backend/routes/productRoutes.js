@@ -6,6 +6,7 @@ const {
   createProduct,
   getProducts,
   getSingleProduct,
+  getRelatedProducts,
   updateProduct,
   deleteProduct,
   createProductReview,
@@ -34,6 +35,12 @@ router.post(
   "/:id/reviews",
   protect,
   createProductReview
+);
+
+// GET RELATED PRODUCTS
+router.get(
+  "/:id/related",
+  getRelatedProducts
 );
 
 // GET SINGLE PRODUCT

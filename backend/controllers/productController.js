@@ -123,6 +123,51 @@ const getSingleProduct = async (req, res) => {
   }
 };
 
+const getRelatedProducts =
+  async (req, res) => {
+
+    try {
+
+      const product =
+        await Product.findById(
+          req.params.id
+        );
+
+      if (!product) {
+
+        return res.status(404).json({
+          message:
+            "Product not found",
+        });
+      }
+
+
+      const relatedProducts =
+        await Product.find({
+
+          category:
+            product.category,
+
+          _id: {
+            $ne:
+              product._id,
+          },
+        }).limit(4);
+
+
+      res.json(
+        relatedProducts
+      );
+
+    } catch (error) {
+
+      res.status(500).json({
+        message:
+          error.message,
+      });
+    }
+  };
+
 
 // UPDATE PRODUCT
 const updateProduct = async (req, res) => {
@@ -268,4 +313,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   createProductReview,
+  getRelatedProducts,
 };
