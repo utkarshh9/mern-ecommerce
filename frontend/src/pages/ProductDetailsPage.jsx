@@ -14,7 +14,12 @@ import {
     useSelector,
 } from "react-redux";
 
-import { addToCart } from "../redux/slices/cartSlice";
+import {
+    addToCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+} from "../redux/slices/cartSlice";
 
 import {
     addToWishlist,
@@ -227,23 +232,121 @@ const ProductDetailsPage = () => {
                     </p>
 
 
-    <div className="flex gap-4 mt-8 items-start">
+<div className="mt-4 flex items-center gap-4">
+
+<div
+    className={`h-[56px] rounded-xl overflow-hidden transition-all duration-200 flex items-center border shadow-md ${currentQuantity === 0
+            ? "w-[220px] bg-black"
+            : "w-[220px] bg-white"
+        }`}
+>
+
+    {/* ADD TO CART BUTTON */}
 
     <button
-        onClick={() => dispatch(addToCart(product))}
+        onClick={() => {
+
+            if (
+                currentQuantity === 0
+            ) {
+
+                dispatch(
+                    addToCart(product)
+                );
+            }
+        }}
+
         disabled={
-            product.stock === 0 ||
-            currentQuantity >= product.stock
+            product.stock === 0
         }
-        className={`px-6 py-3 rounded-lg text-white ${currentQuantity < product.stock
-            ? "bg-black hover:bg-gray-800"
-            : "bg-gray-400 cursor-not-allowed"
+
+        className={`absolute h-[56px] w-[220px] rounded-xl text-white font-medium transition-all duration-200 ${currentQuantity === 0
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95 pointer-events-none"
+            } ${product.stock > 0
+                ? "bg-black hover:bg-gray-800"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
     >
 
         Add To Cart
 
     </button>
+
+
+    {/* QUANTITY CONTROLLER */}
+
+    <div
+        className={`flex items-center w-full h-full transition-all duration-200 ${currentQuantity > 0
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95 pointer-events-none"
+            }`}
+    >
+
+        <button
+            onClick={() => {
+
+                if (
+                    currentQuantity === 1
+                ) {
+
+                    dispatch(
+                        removeFromCart(
+                            product._id
+                        )
+                    );
+
+                } else {
+
+                    dispatch(
+                        decreaseQuantity(
+                            product._id
+                        )
+                    );
+                }
+            }}
+
+            className="w-[60px] h-full text-2xl hover:bg-gray-100 transition"
+        >
+
+            −
+
+        </button>
+
+
+        <div
+            className="flex-1 text-center font-bold text-lg"
+        >
+
+            {currentQuantity}
+
+        </div>
+
+
+        <button
+            onClick={() => {
+
+                if (
+                    currentQuantity <
+                    product.stock
+                ) {
+
+                    dispatch(
+                        addToCart(product)
+                    );
+                }
+            }}
+
+            className="w-[60px] h-full text-2xl hover:bg-gray-100 transition"
+        >
+
+            +
+
+        </button>
+
+    </div>
+
+</div>
 
 
     <button
@@ -263,8 +366,7 @@ const ProductDetailsPage = () => {
                 )
         }
 
-        className={`px-6 py-3 rounded-lg border transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted
-                ? "bg-red-500 text-white"
+className={`h-[56px] min-w-[220px] flex-shrink-0 rounded-xl border font-medium transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted                ? "bg-red-500 text-white"
                 : "bg-white text-black"
             }`}
     >
