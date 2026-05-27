@@ -1,5 +1,4 @@
-import { useEffect, useState }
-    from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -8,8 +7,9 @@ import {
     useParams,
 } from "react-router-dom";
 
-import { useSelector }
-    from "react-redux";
+import { useSelector } from "react-redux";
+
+import { BASE_URL } from "../constants";
 
 
 const AdminEditProductPage = () => {
@@ -48,7 +48,7 @@ const AdminEditProductPage = () => {
 
             const { data } = await axios.get(
 
-                `http://localhost:5000/api/products/${id}`
+                `${BASE_URL}/api/products/${id}`
             );
 
 
@@ -87,7 +87,7 @@ const AdminEditProductPage = () => {
 
                 const { data } = await axios.post(
 
-                    "http://localhost:5000/api/upload",
+                    `${BASE_URL}/api/upload`,
 
                     formData,
 
@@ -123,7 +123,7 @@ const AdminEditProductPage = () => {
 
         await axios.put(
 
-            `http://localhost:5000/api/products/${id}`,
+            `${BASE_URL}/api/products/${id}`,
 
             {
                 title,

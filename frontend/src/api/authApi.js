@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "../constants";
 
 const API_URL =
-  "http://localhost:5000/api/auth";
+  `${BASE_URL}/api/auth`;
 
 
 export const registerUser = async (

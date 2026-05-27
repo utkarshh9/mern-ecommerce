@@ -1,10 +1,10 @@
-import { useEffect, useState }
-    from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 
-import { useSelector }
-    from "react-redux";
+import { useSelector } from "react-redux";
+
+import { BASE_URL } from "../constants";
 
 
 const MyOrdersPage = () => {
@@ -26,7 +26,7 @@ const MyOrdersPage = () => {
                 const { data } =
                     await axios.get(
 
-                        "http://localhost:5000/api/orders/myorders",
+                        `${BASE_URL}/api/orders/myorders`,
 
                         {
                             headers: {
@@ -52,7 +52,7 @@ const MyOrdersPage = () => {
                 const { data } =
                     await axios.post(
 
-                        "http://localhost:5000/api/payments/create-order",
+                        `${BASE_URL}/api/payments/create-order`,
 
                         {
                             amount: order.totalPrice,
@@ -90,7 +90,7 @@ const MyOrdersPage = () => {
 
                         await axios.put(
 
-                            `http://localhost:5000/api/orders/${order._id}/pay`,
+                            `${BASE_URL}/api/orders/${order._id}/pay`,
 
                             {},
 

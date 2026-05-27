@@ -4,6 +4,8 @@ import axios from "axios";
 
 import { useSelector } from "react-redux";
 
+import { BASE_URL } from "../constants";
+
 
 const AdminProductsPage = () => {
 
@@ -17,7 +19,7 @@ const AdminProductsPage = () => {
     const fetchProducts = async () => {
 
         const { data } = await axios.get(
-            "http://localhost:5000/api/products"
+            `${BASE_URL}/api/products`
         );
 
         setProducts(data);
@@ -41,7 +43,7 @@ const AdminProductsPage = () => {
 
             await axios.delete(
 
-                `http://localhost:5000/api/products/${id}`,
+                `${BASE_URL}/api/products/${id}`,
 
                 {
                     headers: {

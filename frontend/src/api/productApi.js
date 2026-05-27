@@ -1,6 +1,7 @@
 import axios from "axios";
+import { BASE_URL } from "../constants";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = `${BASE_URL}/api/products`;
 
 
 export const fetchProducts = async () => {
@@ -12,7 +13,7 @@ export const fetchProducts = async () => {
 export const fetchSingleProduct = async (id) => {
 
   const response = await axios.get(
-    `http://localhost:5000/api/products/${id}`
+    `${BASE_URL}/api/products/${id}`
   );
 
   return response.data;

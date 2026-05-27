@@ -6,11 +6,11 @@ import {
 }
     from "react-redux";
 
-import { useNavigate }
-    from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { clearCart }
-    from "../redux/slices/cartSlice";
+import { clearCart } from "../redux/slices/cartSlice";
+
+import { BASE_URL } from "../constants";
 
 
 const PlaceOrderPage = () => {
@@ -59,7 +59,7 @@ const PlaceOrderPage = () => {
                 const { data: createdOrder } =
                     await axios.post(
 
-                        "http://localhost:5000/api/orders",
+                        `${BASE_URL}/api/orders`,
 
                         {
 
@@ -85,7 +85,7 @@ const PlaceOrderPage = () => {
                 const { data } =
                     await axios.post(
 
-                        "http://localhost:5000/api/payments/create-order",
+                        `${BASE_URL}/api/payments/create-order`,
 
                         {
                             amount: totalPrice,
@@ -123,7 +123,7 @@ const PlaceOrderPage = () => {
 
                         await axios.put(
 
-                            `http://localhost:5000/api/orders/${createdOrder._id}/pay`,
+                            `${BASE_URL}/api/orders/${createdOrder._id}/pay`,
 
                             {},
 

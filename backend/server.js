@@ -13,7 +13,14 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      "https://negozio-web.vercel.app",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);

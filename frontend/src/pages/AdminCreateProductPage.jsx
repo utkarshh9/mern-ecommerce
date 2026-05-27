@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
+import { BASE_URL } from "../constants";
+
 
 const AdminCreateProductPage = () => {
 
@@ -37,7 +39,7 @@ const AdminCreateProductPage = () => {
 
         await axios.post(
 
-            "http://localhost:5000/api/products",
+            `${BASE_URL}/api/products`,
 
             {
                 title,
@@ -76,7 +78,7 @@ const AdminCreateProductPage = () => {
 
                 const { data } = await axios.post(
 
-                    "http://localhost:5000/api/upload",
+                    `${BASE_URL}/api/upload`,
 
                     formData,
 
