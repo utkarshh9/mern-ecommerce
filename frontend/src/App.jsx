@@ -32,6 +32,8 @@ import MyOrdersPage from "./pages/MyOrdersPage";
 
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 
+import WishlistPage from "./pages/WishlistPage";
+
 
 function App() {
   return (
@@ -158,6 +160,11 @@ function App() {
 
             </AdminRoute>
           }
+        />
+
+        <Route
+          path="/wishlist"
+          element={<WishlistPage />}
         />
 
       </Routes>

@@ -32,6 +32,12 @@ const Navbar = () => {
 
                 <div className="flex gap-6">
 
+                    <Link to="/wishlist">
+
+                        Wishlist
+
+                    </Link>
+
                     <Link to="/cart">
                         {totalItems > 0
                             ? `Cart (${totalItems})`
