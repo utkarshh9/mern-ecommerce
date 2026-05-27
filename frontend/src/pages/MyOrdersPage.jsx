@@ -174,8 +174,8 @@ const MyOrdersPage = () => {
 
                                     <h2
                                         className={`text-2xl font-bold ${order.isPaid
-                                                ? "text-green-600"
-                                                : "text-red-500"
+                                            ? "text-green-600"
+                                            : "text-red-500"
                                             }`}
                                     >
 
@@ -200,6 +200,19 @@ const MyOrdersPage = () => {
                                         </button>
 
                                     )}
+
+                                    <p
+                                        className={`mt-2 font-semibold ${order.isDelivered
+                                                ? "text-green-600"
+                                                : "text-orange-500"
+                                            }`}
+                                    >
+
+                                        {order.isDelivered
+                                            ? "Delivered"
+                                            : "Processing"}
+
+                                    </p>
 
 
                                     <p className="text-gray-400 mt-4 text-sm break-all max-w-xs">

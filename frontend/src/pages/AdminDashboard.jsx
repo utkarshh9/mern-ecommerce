@@ -42,6 +42,33 @@ const AdminDashboard = () => {
 
                 </Link>
 
+                <Link
+                    to="/admin/orders"
+                    className="border bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300 flex items-center justify-between"
+                >
+
+                    <>
+
+                        <div>
+
+                            <h2 className="text-2xl font-bold">
+
+                                Manage Orders
+
+                            </h2>
+
+                            <p className="text-gray-500 mt-2">
+
+                                Track and manage customer orders
+
+                            </p>
+
+                        </div>
+
+                    </>
+
+                </Link>
+
             </div>
 
         </div>

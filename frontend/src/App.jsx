@@ -30,6 +30,8 @@ import PlaceOrderPage from "./pages/PlaceOrderPage";
 
 import MyOrdersPage from "./pages/MyOrdersPage";
 
+import AdminOrdersPage from "./pages/AdminOrdersPage";
+
 
 function App() {
   return (
@@ -144,6 +146,17 @@ function App() {
               <MyOrdersPage />
 
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedAdminRoute>
+
+              <AdminOrdersPage />
+
+            </ProtectedAdminRoute>
           }
         />
 

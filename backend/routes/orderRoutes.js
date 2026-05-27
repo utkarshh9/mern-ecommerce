@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  placeOrder, payOrder, getMyOrders,
+  placeOrder, payOrder, getMyOrders, markOrderDelivered, getAllOrders,
 } = require("../controllers/orderController");
 
 const {
@@ -29,5 +29,18 @@ router.get(
   getMyOrders
 );
 
+router.get(
+  "/",
+  protect,
+  admin,
+  getAllOrders
+);
+
+router.put(
+  "/:id/deliver",
+  protect,
+  admin,
+  markOrderDelivered
+);
 
 module.exports = router;
