@@ -49,7 +49,7 @@ const WishlistPage = () => {
 
                         <div
                             key={product._id}
-                            className="border rounded-2xl p-4 shadow-lg"
+                            className="border rounded-2xl p-4 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300 bg-white"
                         >
 
                             <img

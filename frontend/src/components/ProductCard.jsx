@@ -69,7 +69,7 @@ const ProductCard = ({ product }) => {
                             );
                     }}
 
-                    className={`w-full py-2 rounded-lg mt-4 border transition ${isWishlisted
+                    className={`w-full py-2 rounded-lg mt-4 border transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted
                             ? "bg-red-500 text-white"
                             : "bg-white text-black"
                         }`}

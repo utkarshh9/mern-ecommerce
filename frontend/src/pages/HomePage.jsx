@@ -14,20 +14,65 @@ const HomePage = () => {
     const [selectedCategory, setSelectedCategory] =
         useState("All");
 
+    const [sortOption,
+        setSortOption] =
+        useState("");
+
     const [loading, setLoading] = useState(true);
 
-    const filteredProducts = products.filter((product) => {
+    const filteredProducts =
+        [...products]
 
-        const matchesSearch = product.title
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+            .filter((product) => {
 
-        const matchesCategory =
-            selectedCategory === "All" ||
-            product.category === selectedCategory;
+                const matchesSearch =
+                    product.title
+                        .toLowerCase()
+                        .includes(
+                            searchTerm.toLowerCase()
+                        );
 
-        return matchesSearch && matchesCategory;
-    });
+                const matchesCategory =
+
+                    selectedCategory === "All" ||
+
+                    product.category ===
+                    selectedCategory;
+
+                return (
+                    matchesSearch &&
+                    matchesCategory
+                );
+            })
+
+            .sort((a, b) => {
+
+                if (
+                    sortOption ===
+                    "price-low"
+                ) {
+
+                    return a.price - b.price;
+                }
+
+                if (
+                    sortOption ===
+                    "price-high"
+                ) {
+
+                    return b.price - a.price;
+                }
+
+                if (
+                    sortOption ===
+                    "rating"
+                ) {
+
+                    return b.rating - a.rating;
+                }
+
+                return 0;
+            });
 
     const categories = [
         "All",
@@ -93,7 +138,7 @@ const HomePage = () => {
                     onChange={(e) =>
                         setSelectedCategory(e.target.value)
                     }
-                    className="border p-3 rounded-lg"
+                    className="border p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-black transition"
                 >
 
                     {categories.map((category) => (
@@ -106,6 +151,34 @@ const HomePage = () => {
                         </option>
 
                     ))}
+
+                </select>
+
+                <select
+                    value={sortOption}
+                    onChange={(e) =>
+                        setSortOption(
+                            e.target.value
+                        )
+                    }
+                    className="border p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-black transition"
+                >
+
+                    <option value="">
+                        Newest
+                    </option>
+
+                    <option value="price-low">
+                        Price Low-High
+                    </option>
+
+                    <option value="price-high">
+                        Price High-Low
+                    </option>
+
+                    <option value="rating">
+                        Highest Rated
+                    </option>
 
                 </select>
 

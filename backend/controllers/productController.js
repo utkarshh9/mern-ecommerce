@@ -16,17 +16,92 @@ const createProduct = async (req, res) => {
 
 
 // GET ALL PRODUCTS
-const getProducts = async (req, res) => {
-  try {
-    const products = await Product.find();
+const getProducts =
+  async (req, res) => {
 
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
+    try {
+
+      const keyword =
+        req.query.keyword
+
+          ? {
+            title: {
+              $regex:
+                req.query.keyword,
+
+              $options: "i",
+            },
+          }
+
+          : {};
+
+
+      const category =
+        req.query.category
+
+          ? {
+            category:
+              req.query.category,
+          }
+
+          : {};
+
+
+      let sortOption = {
+        createdAt: -1,
+      };
+
+
+      if (
+        req.query.sort ===
+        "price-low"
+      ) {
+
+        sortOption = {
+          price: 1,
+        };
+      }
+
+
+      if (
+        req.query.sort ===
+        "price-high"
+      ) {
+
+        sortOption = {
+          price: -1,
+        };
+      }
+
+
+      if (
+        req.query.sort ===
+        "rating"
+      ) {
+
+        sortOption = {
+          rating: -1,
+        };
+      }
+
+
+      const products =
+        await Product.find({
+          ...keyword,
+          ...category,
+        }).sort(sortOption);
+
+
+      res.json(products);
+
+    } catch (error) {
+
+      res.status(500).json({
+        message:
+          error.message,
+      });
+    }
+  };
 
 
 // GET SINGLE PRODUCT
