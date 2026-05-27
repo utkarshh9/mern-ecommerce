@@ -11,6 +11,10 @@ import {
 
 import { addToCart } from "../redux/slices/cartSlice";
 
+import { BASE_URL } from "../constants";
+
+import axios from "axios";
+
 
 const ProductDetailsPage = () => {
 
@@ -22,11 +26,20 @@ const ProductDetailsPage = () => {
         (state) => state.cart.cartItems
     );
 
+    const userInfo =
+        useSelector(
+            (state) => state.auth.userInfo
+        );
+
     const [product, setProduct] = useState(null);
 
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState("");
+
+    const [rating, setRating] = useState(0);
+
+    const [comment, setComment] = useState("");
 
 
     useEffect(() => {
@@ -78,6 +91,51 @@ const ProductDetailsPage = () => {
 
     const currentQuantity =
         existingCartItem?.quantity || 0;
+
+    const submitReviewHandler =
+        async (e) => {
+
+            e.preventDefault();
+
+            try {
+
+                await axios.post(
+
+                    `${BASE_URL}/api/products/${id}/reviews`,
+
+                    {
+                        rating,
+                        comment,
+                    },
+
+                    {
+                        headers: {
+
+                            Authorization:
+                                `Bearer ${userInfo.token}`,
+                        },
+                    }
+                );
+
+                setComment("");
+
+                setRating(0);
+
+                window.location.reload();
+
+                window.location.reload();
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert(
+                    error.response?.data?.message ||
+                    error.message ||
+                    "Review failed"
+                );
+            }
+        };
 
 
     return (
@@ -168,6 +226,130 @@ const ProductDetailsPage = () => {
                 </div>
 
             </div>
+
+            <p className="mt-4 text-yellow-500 font-semibold">
+
+                ⭐ {product.rating?.toFixed(1)}
+
+                ({product.numReviews} reviews)
+
+            </p>
+
+            <div className="mt-12">
+
+                <h2 className="text-3xl font-bold mb-6">
+
+                    Reviews
+
+                </h2>
+
+
+                {product.reviews?.length === 0 && (
+
+                    <p>No reviews yet</p>
+                )}
+
+
+                <div className="space-y-6">
+
+                    {product.reviews?.map((review) => (
+
+                        <div
+                            key={review._id}
+                            className="border p-5 rounded-xl"
+                        >
+
+                            <h3 className="font-bold text-lg">
+
+                                {review.name}
+
+                            </h3>
+
+
+                            <p className="text-yellow-500 font-semibold mt-1">
+
+                                {"⭐".repeat(review.rating)}
+
+                            </p>
+
+
+                            <p className="mt-3 text-gray-700">
+
+                                {review.comment}
+
+                            </p>
+
+                        </div>
+                    ))}
+
+                </div>
+
+            </div>
+
+            {userInfo && (
+
+                <form
+                    onSubmit={submitReviewHandler}
+                    className="mt-10 border p-6 rounded-xl"
+                >
+
+                    <h3 className="text-2xl font-bold mb-4">
+
+                        Write a Review
+
+                    </h3>
+
+
+                    <select
+                        value={rating}
+                        onChange={(e) =>
+                            setRating(e.target.value)
+                        }
+                        className="w-full border p-3 rounded-lg mb-4"
+                        required
+                    >
+
+                        <option value="">
+
+                            Select Rating
+
+                        </option>
+
+                        <option value="1">1</option>
+
+                        <option value="2">2</option>
+
+                        <option value="3">3</option>
+
+                        <option value="4">4</option>
+
+                        <option value="5">5</option>
+
+                    </select>
+
+
+                    <textarea
+                        value={comment}
+                        onChange={(e) =>
+                            setComment(e.target.value)
+                        }
+                        placeholder="Write your review"
+                        className="w-full border p-3 rounded-lg mb-4"
+                        required
+                    />
+
+
+                    <button
+                        type="submit"
+                        className="bg-black text-white px-6 py-3 rounded-xl"
+                    >
+
+                        Submit Review
+
+                    </button>
+
+                </form>
+            )}
 
         </div>
     );

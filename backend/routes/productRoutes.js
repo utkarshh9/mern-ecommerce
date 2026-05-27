@@ -8,6 +8,7 @@ const {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
 } = require("../controllers/productController");
 
 const {
@@ -28,6 +29,12 @@ router.post(
 // GET ALL PRODUCTS
 router.get("/", getProducts);
 
+// CREATE PRODUCT REVIEW
+router.post(
+  "/:id/reviews",
+  protect,
+  createProductReview
+);
 
 // GET SINGLE PRODUCT
 router.get("/:id", getSingleProduct);
