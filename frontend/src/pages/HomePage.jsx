@@ -6,6 +6,10 @@ import { fetchProducts } from "../api/productApi";
 
 import toast from "react-hot-toast";
 
+import Skeleton from "react-loading-skeleton";
+
+import "react-loading-skeleton/dist/skeleton.css";
+
 
 const HomePage = () => {
 
@@ -110,8 +114,35 @@ const HomePage = () => {
 
     if (loading) {
         return (
-            <div className="text-center mt-10 text-2xl">
-                Loading...
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                {[...Array(8)].map((_, index) => (
+
+                    <div
+                        key={index}
+                        className="border rounded-xl p-4"
+                    >
+
+                        <Skeleton height={220} />
+
+                        <Skeleton
+                            height={30}
+                            className="mt-4"
+                        />
+
+                        <Skeleton
+                            height={20}
+                            className="mt-2"
+                        />
+
+                        <Skeleton
+                            height={40}
+                            className="mt-4"
+                        />
+
+                    </div>
+                ))}
+
             </div>
         );
     }
@@ -201,9 +232,19 @@ const HomePage = () => {
 
             {filteredProducts.length === 0 && (
 
-                <div className="text-center mt-10 text-2xl text-gray-500">
+                <div className="text-center py-20">
 
-                    No products found
+                    <h2 className="text-3xl font-bold">
+
+                        No Products Found
+
+                    </h2>
+
+                    <p className="text-gray-500 mt-4">
+
+                        Try another search or category
+
+                    </p>
 
                 </div>
 

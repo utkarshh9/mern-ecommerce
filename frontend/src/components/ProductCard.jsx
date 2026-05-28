@@ -10,6 +10,8 @@ import {
     removeFromWishlist,
 } from "../redux/slices/wishlistSlice";
 
+import { motion } from "framer-motion";
+
 const ProductCard = ({ product }) => {
 
     const dispatch = useDispatch();
@@ -30,7 +32,29 @@ const ProductCard = ({ product }) => {
 
         <Link to={`/product/${product._id}`}>
 
-            <div className="border rounded-xl p-4 shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-1 bg-white">
+            <motion.div
+
+                whileHover={{
+                    scale: 1.03,
+                }}
+
+                whileTap={{
+                    scale: 0.98,
+                }}
+
+                initial={{
+                    opacity: 0,
+                    y: 20,
+                }}
+
+                animate={{
+                    opacity: 1,
+                    y: 0,
+                }}
+
+                transition={{
+                    duration: 0.3,
+                }} className="border rounded-xl p-4 shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-1 bg-white">
 
                 <img
                     src={product.image}
@@ -70,8 +94,8 @@ const ProductCard = ({ product }) => {
                     }}
 
                     className={`w-full py-2 rounded-lg mt-4 border transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted
-                            ? "bg-red-500 text-white"
-                            : "bg-white text-black"
+                        ? "bg-red-500 text-white"
+                        : "bg-white text-black"
                         }`}
                 >
 
@@ -81,7 +105,7 @@ const ProductCard = ({ product }) => {
 
                 </button>
 
-            </div>
+            </motion.div>
 
         </Link>
     );
