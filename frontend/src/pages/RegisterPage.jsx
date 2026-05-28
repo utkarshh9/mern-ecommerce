@@ -8,125 +8,130 @@ import { registerUser } from "../api/authApi";
 
 import { setCredentials } from "../redux/slices/authSlice";
 
+import toast from "react-hot-toast";
+
 
 const RegisterPage = () => {
 
-  const [name, setName] = useState("");
+    const [name, setName] = useState("");
 
-  const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("");
 
-  const [password, setPassword] =
-    useState("");
+    const [password, setPassword] =
+        useState("");
 
-  const [error, setError] = useState("");
-
-
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
+    const [error, setError] = useState("");
 
 
-  const submitHandler = async (e) => {
+    const dispatch = useDispatch();
 
-    e.preventDefault();
-
-    try {
-
-      const data = await registerUser({
-        name,
-        email,
-        password,
-      });
-
-      dispatch(setCredentials(data));
-
-      navigate("/");
-
-    } catch (error) {
-
-      setError(
-        error.response?.data?.message ||
-        "Registration failed"
-      );
-    }
-  };
+    const navigate = useNavigate();
 
 
-  return (
-    <div className="max-w-md mx-auto mt-20 border p-8 rounded-xl shadow-lg">
+    const submitHandler = async (e) => {
 
-      <h1 className="text-3xl font-bold mb-6">
+        e.preventDefault();
 
-        Register
+        try {
 
-      </h1>
+            const data = await registerUser({
+                name,
+                email,
+                password,
+            });
 
+            dispatch(setCredentials(data));
 
-      {error && (
+            setTimeout(() => {
+                navigate("/");
+            }, 500);
+            toast.success("Account created");
 
-        <p className="text-red-500 mb-4">
+        } catch (error) {
 
-          {error}
-
-        </p>
-
-      )}
-
-
-      <form
-        onSubmit={submitHandler}
-        className="space-y-5"
-      >
-
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) =>
-            setName(e.target.value)
-          }
-          className="w-full border p-3 rounded-lg"
-          required
-        />
+            setError(
+                error.response?.data?.message ||
+                "Registration failed"
+            );
+        }
+    };
 
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          className="w-full border p-3 rounded-lg"
-          required
-        />
+    return (
+        <div className="max-w-md mx-auto mt-20 border p-8 rounded-xl shadow-lg">
+
+            <h1 className="text-3xl font-bold mb-6">
+
+                Register
+
+            </h1>
 
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          className="w-full border p-3 rounded-lg"
-          required
-        />
+            {error && (
+
+                <p className="text-red-500 mb-4">
+
+                    {error}
+
+                </p>
+
+            )}
 
 
-        <button
-          type="submit"
-          className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800"
-        >
+            <form
+                onSubmit={submitHandler}
+                className="space-y-5"
+            >
 
-          Register
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) =>
+                        setName(e.target.value)
+                    }
+                    className="w-full border p-3 rounded-lg"
+                    required
+                />
 
-        </button>
 
-      </form>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) =>
+                        setEmail(e.target.value)
+                    }
+                    className="w-full border p-3 rounded-lg"
+                    required
+                />
 
-    </div>
-  );
+
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) =>
+                        setPassword(e.target.value)
+                    }
+                    className="w-full border p-3 rounded-lg"
+                    required
+                />
+
+
+                <button
+                    type="submit"
+                    className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800"
+                >
+
+                    Register
+
+                </button>
+
+            </form>
+
+        </div>
+    );
 };
 
 export default RegisterPage;

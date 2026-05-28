@@ -8,6 +8,8 @@ import {
     decreaseQuantity,
 } from "../redux/slices/cartSlice";
 
+import toast from "react-hot-toast";
+
 
 const CartPage = () => {
 
@@ -67,7 +69,7 @@ const CartPage = () => {
                                 </h2>
 
                                 <p className="text-gray-600 mt-2">
-                                    ${item.price}
+                                    ₹{item.price}
                                 </p>
 
                                 <div className="flex items-center gap-4 mt-3">
@@ -116,9 +118,10 @@ const CartPage = () => {
 
 
                             <button
-                                onClick={() =>
-                                    dispatch(removeFromCart(item._id))
-                                }
+                                onClick={() => {
+                                    dispatch(removeFromCart(item._id));
+                                    toast.success("Item removed from cart");
+                                }}
                                 className="bg-red-500 text-white px-4 py-2 rounded-lg"
                             >
 
@@ -137,7 +140,7 @@ const CartPage = () => {
 
                     <h2 className="text-3xl font-bold">
 
-                        Total: ${totalPrice.toFixed(2)}
+                        Total: ₹{totalPrice.toFixed(2)}
 
                     </h2>
 

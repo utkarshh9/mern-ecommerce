@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 
 import { BASE_URL } from "../constants";
 
+import toast from "react-hot-toast";
+
 
 const MyOrdersPage = () => {
 
@@ -116,7 +118,7 @@ const MyOrdersPage = () => {
 
             } catch (error) {
 
-                console.log(error);
+                toast.error(error.response?.data?.message || "Something went wrong");
             }
         };
 

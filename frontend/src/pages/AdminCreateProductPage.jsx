@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 import { BASE_URL } from "../constants";
 
+import toast from "react-hot-toast";
+
 
 const AdminCreateProductPage = () => {
 
@@ -37,28 +39,48 @@ const AdminCreateProductPage = () => {
 
         e.preventDefault();
 
-        await axios.post(
+        try {
 
-            `${BASE_URL}/api/products`,
+            await axios.post(
 
-            {
-                title,
-                description,
-                price,
-                category,
-                stock,
-                image,
-            },
+                `${BASE_URL}/api/products`,
 
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${userInfo.token}`,
+                {
+                    title,
+                    description,
+                    price,
+                    category,
+                    stock,
+                    image,
                 },
-            }
-        );
 
-        navigate("/admin/products");
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${userInfo.token}`,
+                    },
+                }
+            );
+
+            toast.success(
+                "Product created"
+            );
+
+            setTimeout(() => {
+
+                navigate("/admin/products");
+
+            }, 500);
+
+        } catch (error) {
+
+            toast.error(
+
+                error.response?.data?.message ||
+
+                "Failed to create product"
+            );
+        }
     };
 
     const uploadFileHandler =
@@ -97,11 +119,13 @@ const AdminCreateProductPage = () => {
 
                 setImage(data.imageUrl);
 
+                toast.success("Image uploaded");
+
                 setUploading(false);
 
             } catch (error) {
 
-                console.log(error);
+                toast.error("Image upload failed");
 
                 setUploading(false);
             }

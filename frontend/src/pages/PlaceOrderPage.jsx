@@ -12,6 +12,8 @@ import { clearCart } from "../redux/slices/cartSlice";
 
 import { BASE_URL } from "../constants";
 
+import toast from "react-hot-toast";
+
 
 const PlaceOrderPage = () => {
 
@@ -139,7 +141,15 @@ const PlaceOrderPage = () => {
 
                         dispatch(clearCart());
 
-                        navigate("/");
+toast.success(
+    "Order placed successfully"
+);
+
+setTimeout(() => {
+
+    navigate("/");
+
+}, 500);
                     },
 
 
@@ -158,9 +168,63 @@ const PlaceOrderPage = () => {
 
             } catch (error) {
 
-                console.log(error);
+                toast.error(
+    error.response?.data?.message ||
+    "Order failed"
+);
             }
         };
+
+        const payLaterHandler =
+    async () => {
+
+        try {
+
+            await axios.post(
+
+                `${BASE_URL}/api/orders`,
+
+                {
+
+                    orderItems: cartItems,
+
+                    shippingAddress,
+
+                    totalPrice,
+
+                },
+
+                {
+                    headers: {
+
+                        Authorization:
+                            `Bearer ${userInfo.token}`,
+                    },
+                }
+            );
+
+            dispatch(clearCart());
+
+            toast.success(
+                "Order placed successfully"
+            );
+
+            setTimeout(() => {
+
+                navigate("/");
+
+            }, 500);
+
+        } catch (error) {
+
+            toast.error(
+
+                error.response?.data?.message ||
+
+                "Order failed"
+            );
+        }
+    };
 
 
     return (
@@ -228,9 +292,9 @@ const PlaceOrderPage = () => {
 
                             <p>
 
-                                $
-                                {item.price *
-                                    item.quantity}
+                                ₹
+{(item.price * item.quantity)
+    .toLocaleString("en-IN")}
 
                             </p>
 
@@ -241,20 +305,34 @@ const PlaceOrderPage = () => {
                     <h2 className="text-3xl font-bold mt-8">
 
                         Total:
-                        $
-                        {totalPrice.toFixed(2)}
+                        ₹
+                        {totalPrice.toLocaleString("en-IN")}
 
                     </h2>
 
 
-                    <button
-                        onClick={placeOrderHandler}
-                        className="w-full bg-black text-white py-3 rounded-lg mt-8"
-                    >
+                    <div className="space-y-4 mt-8">
 
-                        Place Order
+    <button
+        onClick={placeOrderHandler}
+        className="w-full bg-black text-white py-3 rounded-lg"
+    >
 
-                    </button>
+        Pay Now
+
+    </button>
+
+
+    <button
+        onClick={payLaterHandler}
+        className="w-full border border-black py-3 rounded-lg hover:bg-gray-100 transition"
+    >
+
+        Pay Later
+
+    </button>
+
+</div>
 
                 </div>
 

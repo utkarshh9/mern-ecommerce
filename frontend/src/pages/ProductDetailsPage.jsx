@@ -30,6 +30,8 @@ import { BASE_URL } from "../constants";
 
 import axios from "axios";
 
+import toast from "react-hot-toast";
+
 
 const ProductDetailsPage = () => {
 
@@ -42,9 +44,9 @@ const ProductDetailsPage = () => {
     );
 
     const { wishlistItems } =
-    useSelector(
-        (state) => state.wishlist
-    );
+        useSelector(
+            (state) => state.wishlist
+        );
 
     const userInfo =
         useSelector(
@@ -150,28 +152,31 @@ const ProductDetailsPage = () => {
 
                 setRating(0);
 
-                window.location.reload();
+                toast.success(
+                    "Review submitted"
+                );
 
-                window.location.reload();
+                setTimeout(() => {
+
+                    window.location.reload();
+
+                }, 1200);
 
             } catch (error) {
 
-                console.log(error);
-
-                alert(
+                toast.error(
                     error.response?.data?.message ||
-                    error.message ||
-                    "Review failed"
+                    "Something went wrong"
                 );
             }
         };
 
-        const isWishlisted =
-    wishlistItems.find(
+    const isWishlisted =
+        wishlistItems.find(
 
-        (item) =>
-            item._id === product?._id
-    );
+            (item) =>
+                item._id === product?._id
+        );
 
 
     return (
@@ -232,164 +237,164 @@ const ProductDetailsPage = () => {
                     </p>
 
 
-<div className="mt-4 flex items-center gap-4">
+                    <div className="mt-4 flex items-center gap-4">
 
-<div
-    className={`h-[56px] rounded-xl overflow-hidden transition-all duration-200 flex items-center border shadow-md ${currentQuantity === 0
-            ? "w-[220px] bg-black"
-            : "w-[220px] bg-white"
-        }`}
->
+                        <div
+                            className={`h-[56px] rounded-xl overflow-hidden transition-all duration-200 flex items-center border shadow-md ${currentQuantity === 0
+                                ? "w-[220px] bg-black"
+                                : "w-[220px] bg-white"
+                                }`}
+                        >
 
-    {/* ADD TO CART BUTTON */}
+                            {/* ADD TO CART BUTTON */}
 
-    <button
-        onClick={() => {
+                            <button
+                                onClick={() => {
 
-            if (
-                currentQuantity === 0
-            ) {
+                                    if (
+                                        currentQuantity === 0
+                                    ) {
 
-                dispatch(
-                    addToCart(product)
-                );
-            }
-        }}
+                                        dispatch(
+                                            addToCart(product)
+                                        );
+                                    }
+                                }}
 
-        disabled={
-            product.stock === 0
-        }
+                                disabled={
+                                    product.stock === 0
+                                }
 
-        className={`absolute h-[56px] w-[220px] rounded-xl text-white font-medium transition-all duration-200 ${currentQuantity === 0
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-95 pointer-events-none"
-            } ${product.stock > 0
-                ? "bg-black hover:bg-gray-800"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-    >
+                                className={`absolute h-[56px] w-[220px] rounded-xl text-white font-medium transition-all duration-200 ${currentQuantity === 0
+                                    ? "opacity-100 scale-100"
+                                    : "opacity-0 scale-95 pointer-events-none"
+                                    } ${product.stock > 0
+                                        ? "bg-black hover:bg-gray-800"
+                                        : "bg-gray-400 cursor-not-allowed"
+                                    }`}
+                            >
 
-        Add To Cart
+                                Add To Cart
 
-    </button>
-
-
-    {/* QUANTITY CONTROLLER */}
-
-    <div
-        className={`flex items-center w-full h-full transition-all duration-200 ${currentQuantity > 0
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-95 pointer-events-none"
-            }`}
-    >
-
-        <button
-            onClick={() => {
-
-                if (
-                    currentQuantity === 1
-                ) {
-
-                    dispatch(
-                        removeFromCart(
-                            product._id
-                        )
-                    );
-
-                } else {
-
-                    dispatch(
-                        decreaseQuantity(
-                            product._id
-                        )
-                    );
-                }
-            }}
-
-            className="w-[60px] h-full text-2xl hover:bg-gray-100 transition"
-        >
-
-            −
-
-        </button>
+                            </button>
 
 
-        <div
-            className="flex-1 text-center font-bold text-lg"
-        >
+                            {/* QUANTITY CONTROLLER */}
 
-            {currentQuantity}
+                            <div
+                                className={`flex items-center w-full h-full transition-all duration-200 ${currentQuantity > 0
+                                    ? "opacity-100 scale-100"
+                                    : "opacity-0 scale-95 pointer-events-none"
+                                    }`}
+                            >
 
-        </div>
+                                <button
+                                    onClick={() => {
 
+                                        if (
+                                            currentQuantity === 1
+                                        ) {
 
-        <button
-            onClick={() => {
+                                            dispatch(
+                                                removeFromCart(
+                                                    product._id
+                                                )
+                                            );
 
-                if (
-                    currentQuantity <
-                    product.stock
-                ) {
+                                        } else {
 
-                    dispatch(
-                        addToCart(product)
-                    );
-                }
-            }}
+                                            dispatch(
+                                                decreaseQuantity(
+                                                    product._id
+                                                )
+                                            );
+                                        }
+                                    }}
 
-            className="w-[60px] h-full text-2xl hover:bg-gray-100 transition"
-        >
+                                    className="w-[60px] h-full text-2xl hover:bg-gray-100 transition"
+                                >
 
-            +
+                                    −
 
-        </button>
-
-    </div>
-
-</div>
-
-
-    <button
-
-        onClick={() =>
-
-            isWishlisted
-
-                ? dispatch(
-                    removeFromWishlist(
-                        product._id
-                    )
-                )
-
-                : dispatch(
-                    addToWishlist(product)
-                )
-        }
-
-className={`h-[56px] min-w-[220px] flex-shrink-0 rounded-xl border font-medium transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted                ? "bg-red-500 text-white"
-                : "bg-white text-black"
-            }`}
-    >
-
-        {isWishlisted
-            ? "♥ Remove Wishlist"
-            : "♡ Add Wishlist"}
-
-    </button>
-
-</div>
+                                </button>
 
 
-{currentQuantity >= product.stock &&
-    product.stock > 0 && (
+                                <div
+                                    className="flex-1 text-center font-bold text-lg"
+                                >
 
-        <p className="text-red-500 mt-4">
+                                    {currentQuantity}
 
-            Maximum available stock reached
+                                </div>
 
-        </p>
 
-)}
+                                <button
+                                    onClick={() => {
+
+                                        if (
+                                            currentQuantity <
+                                            product.stock
+                                        ) {
+
+                                            dispatch(
+                                                addToCart(product)
+                                            );
+                                        }
+                                    }}
+
+                                    className="w-[60px] h-full text-2xl hover:bg-gray-100 transition"
+                                >
+
+                                    +
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+
+                            onClick={() =>
+
+                                isWishlisted
+
+                                    ? dispatch(
+                                        removeFromWishlist(
+                                            product._id
+                                        )
+                                    )
+
+                                    : dispatch(
+                                        addToWishlist(product)
+                                    )
+                            }
+
+                            className={`h-[56px] min-w-[220px] flex-shrink-0 rounded-xl border font-medium transition duration-300 hover:scale-[1.02] hover:shadow-md ${isWishlisted ? "bg-red-500 text-white"
+                                : "bg-white text-black"
+                                }`}
+                        >
+
+                            {isWishlisted
+                                ? "♥ Remove Wishlist"
+                                : "♡ Add Wishlist"}
+
+                        </button>
+
+                    </div>
+
+
+                    {currentQuantity >= product.stock &&
+                        product.stock > 0 && (
+
+                            <p className="text-red-500 mt-4">
+
+                                Maximum available stock reached
+
+                            </p>
+
+                        )}
 
                 </div>
 

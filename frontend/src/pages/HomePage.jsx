@@ -4,6 +4,8 @@ import ProductCard from "../components/ProductCard";
 
 import { fetchProducts } from "../api/productApi";
 
+import toast from "react-hot-toast";
+
 
 const HomePage = () => {
 
@@ -92,7 +94,7 @@ const HomePage = () => {
 
             } catch (error) {
 
-                console.log(error);
+                toast.error(error.response?.data?.message || "Something went wrong");
 
             } finally {
 

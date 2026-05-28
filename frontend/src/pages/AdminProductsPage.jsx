@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 import { BASE_URL } from "../constants";
 
+import toast from "react-hot-toast";
 
 const AdminProductsPage = () => {
 
@@ -54,6 +55,9 @@ const AdminProductsPage = () => {
             );
 
             fetchProducts();
+            
+            toast.success("Product deleted");
+
         }
     };
 

@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 
 import { BASE_URL } from "../constants";
 
+import toast from "react-hot-toast";
+
 
 const AdminEditProductPage = () => {
 
@@ -106,11 +108,13 @@ const AdminEditProductPage = () => {
 
                 setImage(data.imageUrl);
 
+                toast.success("Image uploaded");
+
                 setUploading(false);
 
             } catch (error) {
 
-                console.log(error);
+                toast.error("Image upload failed");
 
                 setUploading(false);
             }
@@ -121,28 +125,48 @@ const AdminEditProductPage = () => {
 
         e.preventDefault();
 
-        await axios.put(
+        try {
 
-            `${BASE_URL}/api/products/${id}`,
+            await axios.put(
 
-            {
-                title,
-                description,
-                price,
-                category,
-                stock,
-                image,
-            },
+                `${BASE_URL}/api/products/${id}`,
 
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${userInfo.token}`,
+                {
+                    title,
+                    description,
+                    price,
+                    category,
+                    stock,
+                    image,
                 },
-            }
-        );
 
-        navigate("/admin/products");
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${userInfo.token}`,
+                    },
+                }
+            );
+
+            toast.success(
+                "Product updated"
+            );
+
+            setTimeout(() => {
+
+                navigate("/admin/products");
+
+            }, 500);
+
+        } catch (error) {
+
+            toast.error(
+
+                error.response?.data?.message ||
+
+                "Failed to update product"
+            );
+        }
     };
 
 
