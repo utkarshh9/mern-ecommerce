@@ -34,6 +34,8 @@ import AdminOrdersPage from "./pages/AdminOrdersPage";
 
 import WishlistPage from "./pages/WishlistPage";
 
+import NotFoundPage from "./pages/NotFoundPage";
+
 
 function App() {
   return (
@@ -165,6 +167,11 @@ function App() {
         <Route
           path="/wishlist"
           element={<WishlistPage />}
+        />
+
+        <Route
+          path="*"
+          element={<NotFoundPage />}
         />
 
       </Routes>

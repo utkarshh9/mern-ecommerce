@@ -1,11 +1,11 @@
 import {
-  useEffect,
-  useState,
+    useEffect,
+    useState,
 } from "react";
 
 import axios from "axios";
 
-import { useSelector,} from "react-redux";
+import { useSelector, } from "react-redux";
 
 import { BASE_URL } from "../constants";
 
@@ -14,192 +14,192 @@ import toast from "react-hot-toast";
 
 const AdminOrdersPage = () => {
 
-  const [orders, setOrders] =
-    useState([]);
+    const [orders, setOrders] =
+        useState([]);
 
-  const {
-    userInfo,
-  } = useSelector(
-    (state) => state.auth
-  );
+    const {
+        userInfo,
+    } = useSelector(
+        (state) => state.auth
+    );
 
 
-  const fetchOrders =
-    async () => {
+    const fetchOrders =
+        async () => {
 
-      try {
+            try {
 
-        const { data } =
-          await axios.get(
+                const { data } =
+                    await axios.get(
 
-            `${BASE_URL}/api/orders`,
+                        `${BASE_URL}/api/orders`,
 
-            {
-              headers: {
+                        {
+                            headers: {
 
-                Authorization:
-                  `Bearer ${userInfo.token}`,
-              },
+                                Authorization:
+                                    `Bearer ${userInfo.token}`,
+                            },
+                        }
+                    );
+
+                setOrders(data);
+
+            } catch (error) {
+
+                toast.error(
+                    error.response?.data?.message ||
+                    "Failed to fetch orders"
+                );
             }
-          );
-          console.log(data);
-
-        setOrders(data);
-
-      } catch (error) {
-
-        console.log(error.response);
-      }
-    };
+        };
 
 
-  useEffect(() => {
-
-    fetchOrders();
-
-  }, []);
-
-
-  const deliverHandler =
-    async (id) => {
-
-      try {
-
-        await axios.put(
-
-          `${BASE_URL}/api/orders/${id}/deliver`,
-
-          {},
-
-          {
-            headers: {
-
-              Authorization:
-                `Bearer ${userInfo.token}`,
-            },
-          }
-        );
+    useEffect(() => {
 
         fetchOrders();
 
-        toast.success("Order marked as delivered");
-
-      } catch (error) {
-
-        toast.error(error.response?.data?.message || "Something went wrong");
-      }
-    };
+    }, []);
 
 
-  return (
+    const deliverHandler =
+        async (id) => {
 
-    <div className="max-w-7xl mx-auto p-6">
+            try {
 
-      <h1 className="text-4xl font-bold mb-10">
+                await axios.put(
 
-        Manage Orders
+                    `${BASE_URL}/api/orders/${id}/deliver`,
 
-      </h1>
+                    {},
 
+                    {
+                        headers: {
 
-      <div className="space-y-6">
+                            Authorization:
+                                `Bearer ${userInfo.token}`,
+                        },
+                    }
+                );
 
-        {orders.map((order) => (
+                fetchOrders();
 
-          <div
-            key={order._id}
-            className="border rounded-2xl p-6 shadow"
-          >
+                toast.success("Order marked as delivered");
 
-            <div className="flex justify-between items-start">
+            } catch (error) {
 
-              <div>
-
-                <h2 className="text-2xl font-bold">
-
-                  {order.user.name}
-
-                </h2>
-
-
-                <p className="text-gray-500 mt-1">
-
-                  {order.user.email}
-
-                </p>
+                toast.error(error.response?.data?.message || "Something went wrong");
+            }
+        };
 
 
-                <p className="text-3xl mt-4 font-bold">
+    return (
 
-                  ₹{order.totalPrice}
+        <div className="max-w-7xl mx-auto p-6">
 
-                </p>
+            <h1 className="text-4xl font-bold mb-10">
 
-              </div>
+                Manage Orders
 
-
-              <div className="text-right">
-
-                <p
-                  className={`font-bold text-lg ${
-                    order.isPaid
-                      ? "text-green-600"
-                      : "text-red-500"
-                  }`}
-                >
-
-                  {order.isPaid
-                    ? "Paid"
-                    : "Unpaid"}
-
-                </p>
+            </h1>
 
 
-                <p
-                  className={`mt-2 font-bold ${
-                    order.isDelivered
-                      ? "text-green-600"
-                      : "text-orange-500"
-                  }`}
-                >
+            <div className="space-y-6">
 
-                  {order.isDelivered
-                    ? "Delivered"
-                    : "Processing"}
+                {orders.map((order) => (
 
-                </p>
+                    <div
+                        key={order._id}
+                        className="border rounded-2xl p-6 shadow"
+                    >
 
-                {!order.isDelivered && (
+                        <div className="flex justify-between items-start">
 
-              <button
-                onClick={() =>
-                  deliverHandler(
-                    order._id
-                  )
-                }
-                className="mt-6 bg-black text-white px-6 py-3 rounded-xl"
-              >
+                            <div>
 
-                Mark Delivered
+                                <h2 className="text-2xl font-bold">
 
-              </button>
+                                    {order.user.name}
 
-            )}
+                                </h2>
 
-              </div>
+
+                                <p className="text-gray-500 mt-1">
+
+                                    {order.user.email}
+
+                                </p>
+
+
+                                <p className="text-3xl mt-4 font-bold">
+
+                                    ₹{order.totalPrice}
+
+                                </p>
+
+                            </div>
+
+
+                            <div className="text-right">
+
+                                <p
+                                    className={`font-bold text-lg ${order.isPaid
+                                            ? "text-green-600"
+                                            : "text-red-500"
+                                        }`}
+                                >
+
+                                    {order.isPaid
+                                        ? "Paid"
+                                        : "Unpaid"}
+
+                                </p>
+
+
+                                <p
+                                    className={`mt-2 font-bold ${order.isDelivered
+                                            ? "text-green-600"
+                                            : "text-orange-500"
+                                        }`}
+                                >
+
+                                    {order.isDelivered
+                                        ? "Delivered"
+                                        : "Processing"}
+
+                                </p>
+
+                                {!order.isDelivered && (
+
+                                    <button
+                                        onClick={() =>
+                                            deliverHandler(
+                                                order._id
+                                            )
+                                        }
+                                        className="mt-6 bg-black text-white px-6 py-3 rounded-xl"
+                                    >
+
+                                        Mark Delivered
+
+                                    </button>
+
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+                ))}
 
             </div>
 
-
-            
-
-          </div>
-        ))}
-
-      </div>
-
-    </div>
-  );
+        </div>
+    );
 };
 
 export default AdminOrdersPage;
